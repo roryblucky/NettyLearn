@@ -19,8 +19,8 @@ public class RpcRegistry {
     }
 
     public void start() {
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        EventLoopGroup bossGroup = new NioEventLoopGroup(); //处理客户端连接
+        EventLoopGroup workerGroup = new NioEventLoopGroup(); //处理与各个客户端连接的I/O操作
 
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
@@ -38,7 +38,7 @@ public class RpcRegistry {
                                     .addLast(new RegistryHandler());
                         }
                     })
-                    .option(ChannelOption.SO_BACKLOG, 1248)
+                    .option(ChannelOption.SO_BACKLOG, 128)
             .childOption(ChannelOption.SO_KEEPALIVE, true);
 
             ChannelFuture future = bootstrap.bind(port).sync();
